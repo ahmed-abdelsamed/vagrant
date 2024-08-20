@@ -1,0 +1,129 @@
+## Installation
+sudo dnf config-manager --add-repo=https://download.virtualbox.org/virtualbox/rpm/el/virtualbox.repo
+sudo yum install VirtualBox-7.0
+
+wget https://download.virtualbox.org/virtualbox/7.0.0_BETA1/Oracle_VM_VirtualBox_Extension_Pack-7.0.0_BETA1.vbox-extpack
+
+sudo VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-7.0.0_BETA1.vbox-extpack
+ dnf install https://releases.hashicorp.com/vagrant/2.4.1/vagrant-2.4.1-1.x86_64.rpm
+ vagrant --version
+
+dnf install epel-release epel-next-release
+yum groupinstall "Development tools"
+ yum install dkms
+
+################
+
+vagrant init ubunut-16.04
+
+vagrant up
+vagrant ssh 
+vagrant halt  # shutdown VM
+
+==================================
+vagrant box add centos/8 --provider=virtualbox
+'
+if appear error:
+The box 'centos/8' could not be found or
+could not be accessed in the remote catalog. If this is a private
+box on HashiCorp's Vagrant Cloud, please verify you're logged in via
+`vagrant login`. Also, please double-check the name. The expanded
+URL and error message are shown below:
+### Solve:
+rm -r C:\Users\amabd\.vagrant.d\tmp\
+
+vagrant box add centos/8 --provider=virtualbox --insecure
+'
+vagrant box list
+
+PS I:\vagrant> vagrant box list 
+centos/8 (virtualbox, 2011.0) 
+
+vagrant init centos/8
+
+ vim Vagrantfile
+ '
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/8"
+  config.vm.box_check_update = false
+  config.vm.hostname = "centos8"
+  config.vm.network "public_network"
+  config.vm.provider "virtualbox" do |vb|
+  # Display the VirtualBox GUI when booting the machine
+     vb.gui = false
+     vb.memory = "2048"
+     vb.cpus = 2
+  end
+end
+ '
+vagrant validate
+ vagrant up 
+vagrant ssh 
+if access root:  sudo -i 
+ If you want to destroy the VM, use:
+
+$ vagrant destroy   
+    centos8: Are you sure you want to destroy the 'centos8' VM? [y/N] y
+==> centos8: Removing domain...
+Whenever you make a change to the Vagrantfile, restart the machine for the changes to take effect.
+
+$ vagrant reload
+To stop the instance, use:
+
+$ vagrant halt
+If you would like to save the current state of the VM while stopping it, use:
+
+$ vagrant suspend
+With this, you’ll return to exactly the same state at a later time when VM is started.
+
+Destroy the Vagrant machine when done  by running:
+
+$ vagrant destroy
+
+==========================================
+=================HostOnly Nat Network=========================
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://atlas.hashicorp.com/search.
+  config.vm.define "HQ" do |hq|
+        hq.vm.box = "minimal/centos7"
+        hq.vm.network "private_network", :type => 'dhcp'
+        hq.vm.network "private_network", :type => 'dhcp'
+        hq.vm.provider "virtualbox" do |vb|
+          vb.name = "HQ"
+          vb.cpus = 2
+          vb.customize ["modifyvm", :id, "--nic2", "hostonly", "--hostonlyadapter2", "VirtualBox Host-Only Ethernet Adapter"]
+          vb.customize ["modifyvm", :id, "--nic3", "natnetwork"]
+          vb.customize ["modifyvm", :id, "--nat-network3", "NatNetwork"]
+        end
+  end
+end
+
+========================================================
+VBoxManage list runningvms
+
+# list all vms created by vagrant
+vagrant status 
+
+vagrant ssh-config > .ssh.config
+
+VBoxManage list runningvms dhcpservers
+
+vagrant ssh -c "ifconfig | grep inet" hostname 
+
+---------------------------------------------------
+vagrant plugin install vagrant-disksize
