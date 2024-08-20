@@ -2,9 +2,9 @@
 sudo dnf config-manager --add-repo=https://download.virtualbox.org/virtualbox/rpm/el/virtualbox.repo
 sudo yum install VirtualBox-7.0
 
-wget https://download.virtualbox.org/virtualbox/7.0.0_BETA1/Oracle_VM_VirtualBox_Extension_Pack-7.0.0_BETA1.vbox-extpack
+wget https://download.virtualbox.org/virtualbox/7.0.0/Oracle_VM_VirtualBox_Extension_Pack-7.0.0.vbox-extpack
 
-sudo VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-7.0.0_BETA1.vbox-extpack
+sudo VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-7.0.0.vbox-extpack
  dnf install https://releases.hashicorp.com/vagrant/2.4.1/vagrant-2.4.1-1.x86_64.rpm
  vagrant --version
 
