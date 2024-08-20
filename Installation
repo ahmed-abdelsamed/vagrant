@@ -127,3 +127,8 @@ vagrant ssh -c "ifconfig | grep inet" hostname
 
 ---------------------------------------------------
 vagrant plugin install vagrant-disksize
+
+
+-----------------------------------------------
+vagrant status
+vagrant ssh rke2.master1
